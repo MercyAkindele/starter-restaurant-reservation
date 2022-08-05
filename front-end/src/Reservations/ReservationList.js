@@ -4,15 +4,17 @@ import { cancelReservation } from "../utils/api";
 
 export default function ReservationList({ reservations }) {
   const clickHandler = async (reservation_id, status) => {
+    const ac = new AbortController();
     const shouldWeCancel = window.confirm(
       `Do you want to cancel this reservation? This cannot be undone.`
     );
     if (shouldWeCancel) {
       async function requestToUpdateReservationStatus() {
-        await cancelReservation(reservation_id, status);
+        await cancelReservation(reservation_id, status, ac.signal);
         window.location.reload();
       }
       requestToUpdateReservationStatus();
+      return () => ac.abort();
     }
   };
 

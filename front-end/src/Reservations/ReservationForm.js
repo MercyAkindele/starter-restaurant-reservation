@@ -39,12 +39,14 @@ export default function ReservationForm({ reservation_id, eventType }) {
       } catch (error) {
         if (error.name === "AbortError") {
           console.log("Aborted");
+          ac.abort();
         } else {
           throw error;
         }
       }
     }
     reservation_id && readReservationInfo();
+
   }, [reservation_id]);
 
   function handleSubmit(event) {
